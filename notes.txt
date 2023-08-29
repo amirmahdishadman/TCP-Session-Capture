@@ -1,0 +1,128 @@
+Timestamp	Channel	CPU	Event type	Contents	TID	Prio	PID	Source
+
+16:56:28.763 406 701	channel0_5	5	irq_handler_entry	irq=130, name=rtw88_pci, context.packet_seq_num=1, context.cpu_id=5, context._vtid=14973, context._vpid=14973, context._procname=perf	14973	20	14973	
+16:56:28.763 407 364	channel0_5	5	irq_handler_exit	irq=130, ret=2, context.packet_seq_num=1, context.cpu_id=5, context._vtid=14973, context._vpid=14973, context._procname=perf	14973	20	14973	
+16:56:28.763 407 761	channel0_5	5	sched_waking	comm=irq/130-rtw88_p, tid=743, prio=-51, target_cpu=5, context.packet_seq_num=1, context.cpu_id=5, context._vtid=14973, context._vpid=14973, context._procname=perf	14973	20	14973	
+16:56:28.763 408 511	channel0_5	5	sched_wakeup	comm=irq/130-rtw88_p, tid=743, prio=-51, target_cpu=5, context.packet_seq_num=1, context.cpu_id=5, context._vtid=14973, context._vpid=14973, context._procname=perf	14973	20	14973	
+16:56:28.763 443 049	channel0_5	5	syscall_exit_read	ret=4047, fd=245, count=8192, context.packet_seq_num=1, context.cpu_id=5, context._vtid=14973, context._vpid=14973, context._procname=perf	14973	20	14973	[fs/read_write.c:0]
+16:56:28.763 444 328	channel0_5	5	sched_switch	prev_comm=perf, prev_tid=14973, prev_prio=20, prev_state=0, next_comm=irq/130-rtw88_p, next_tid=743, next_prio=-51, context.packet_seq_num=1, context.cpu_id=5, context._vtid=14973, context._vpid=14973, context._procname=perf	14973	20	14973	
+16:56:28.763 636 764	channel0_5	5	irq_softirq_raise	vec=3, context.packet_seq_num=1, context.cpu_id=5, context._vtid=743, context._vpid=743, context._procname=irq/130-rtw88_p	743	-51	743	
+16:56:28.763 637 276	channel0_5	5	irq_softirq_entry	vec=3, context.packet_seq_num=1, context.cpu_id=5, context._vtid=743, context._vpid=743, context._procname=irq/130-rtw88_p	743	-51	743	
+16:56:28.763 642 964	channel0_5	5	skb_consume	skbaddr=0xffff9e5f141a1600, context.packet_seq_num=1, context.cpu_id=5, context._vtid=743, context._vpid=743, context._procname=irq/130-rtw88_p	743	-51	743	
+
+network card here know a packet recived
+16:56:28.763 647 909	channel0_5	5	net_napi_gro_receive_entry	skbaddr=0xffff9e5f141a1600, context.packet_seq_num=1, context.cpu_id=5, context._vtid=743, context._vpid=743, context._procname=irq/130-rtw88_p	743	-51	743	
+16:56:28.763 650 078	channel0_5	5	net_napi_gro_receive_exit	ret=3, context.packet_seq_num=1, context.cpu_id=5, context._vtid=743, context._vpid=743, context._procname=irq/130-rtw88_p	743	-51	743	
+16:56:28.763 838 460	channel0_5	5	net_if_receive_skb	skbaddr=0xffff9e5f141a1600, len=60, name=wlp3s0, network_header_type=_ipv4, network_header=ipv4=[version=4, ihl=5, tos=0, tot_len=60, id=0x48ad, frag_off=16384, ttl=64, protocol=_tcp, checksum=0xb7d7, saddr_padding=[], saddr=[172, 18, 240, 110], daddr_padding=[], daddr=[172, 18, 241, 163], transport_header_type=_tcp, transport_header=tcp=[source_port=56740, dest_port=2000, seq=3607051070, ack_seq=0, data_offset=10, reserved=0, flags=0x2, window_size=65535, checksum=0x4e6c, urg_ptr=0]], context.packet_seq_num=1, context.cpu_id=5, context._vtid=743, context._vpid=743, context._procname=irq/130-rtw88_p	743	-51	743	
+
+#wireshark see syn from client here
+
+
+#next line is creating syn-ack packet for send to client
+16:56:28.763 869 709	channel0_5	5	net_dev_queue	skbaddr=0xffff9e5f141a0300, len=74, name=wlp3s0, network_header_type=_ipv4, network_header=ipv4=[version=4, ihl=5, tos=0, tot_len=60, id=0x0, frag_off=16384, ttl=64, protocol=_tcp, checksum=0x85, saddr_padding=[], saddr=[172, 18, 241, 163], daddr_padding=[], daddr=[172, 18, 240, 110], transport_header_type=_tcp, transport_header=tcp=[source_port=2000, dest_port=56740, seq=3399918028, ack_seq=3607051071, data_offset=10, reserved=0, flags=0x12, window_size=65160, checksum=0x3a66, urg_ptr=0]], context.packet_seq_num=1, context.cpu_id=5, context._vtid=743, context._vpid=743, context._procname=irq/130-rtw88_p	743	-51	743	
+16:56:28.763 871 972	channel0_5	5	skb_consume	skbaddr=0xffff9e5f141a0e00, context.packet_seq_num=1, context.cpu_id=5, context._vtid=743, context._vpid=743, context._procname=irq/130-rtw88_p	743	-51	743	
+16:56:28.763 875 680	channel0_5	5	sched_waking	comm=kworker/u17:0, tid=7700, prio=0, target_cpu=0, context.packet_seq_num=1, context.cpu_id=5, context._vtid=743, context._vpid=743, context._procname=irq/130-rtw88_p	743	-51	743	
+
+#in next line server send syn-ack to client
+16:56:28.763 876 832	channel0_5	5	net_dev_xmit	skbaddr=0xffff9e5f141a0300, rc=0, len=74, name=wlp3s0, context.packet_seq_num=1, context.cpu_id=5, context._vtid=743, context._vpid=743, context._procname=irq/130-rtw88_p	743	-51	743	
+16:56:28.763 877 696	channel0_5	5	skb_consume	skbaddr=0xffff9e5f141a0100, context.packet_seq_num=1, context.cpu_id=5, context._vtid=743, context._vpid=743, context._procname=irq/130-rtw88_p	743	-51	743	
+16:56:28.763 879 140	channel0_5	5	skb_consume	skbaddr=0xffff9e5f141a1600, context.packet_seq_num=1, context.cpu_id=5, context._vtid=743, context._vpid=743, context._procname=irq/130-rtw88_p	743	-51	743	
+16:56:28.764 068 454	channel0_5	5	napi_poll	napi=0xffff9e5f18587658, dev_name=, work=2, budget=64, context.packet_seq_num=1, context.cpu_id=5, context._vtid=743, context._vpid=743, context._procname=irq/130-rtw88_p	743	-51	743	
+16:56:28.764 068 960	channel0_5	5	irq_softirq_exit	vec=3, context.packet_seq_num=1, context.cpu_id=5, context._vtid=743, context._vpid=743, context._procname=irq/130-rtw88_p	743	-51	743	
+16:56:28.764 076 015	channel0_5	5	irq_handler_entry	irq=130, name=rtw88_pci, context.packet_seq_num=1, context.cpu_id=5, context._vtid=14973, context._vpid=14973, context._procname=perf	14973	20	14973	
+16:56:28.764 076 625	channel0_5	5	irq_handler_exit	irq=130, ret=2, context.packet_seq_num=1, context.cpu_id=5, context._vtid=14973, context._vpid=14973, context._procname=perf	14973	20	14973	
+16:56:28.764 077 027	channel0_5	5	sched_waking	comm=irq/130-rtw88_p, tid=743, prio=-51, target_cpu=5, context.packet_seq_num=1, context.cpu_id=5, context._vtid=14973, context._vpid=14973, context._procname=perf	14973	20	14973	
+16:56:28.764 077 805	channel0_5	5	sched_wakeup	comm=irq/130-rtw88_p, tid=743, prio=-51, target_cpu=5, context.packet_seq_num=1, context.cpu_id=5, context._vtid=14973, context._vpid=14973, context._procname=perf	14973	20	14973	
+16:56:28.764 079 194	channel0_5	5	sched_switch	prev_comm=perf, prev_tid=14973, prev_prio=20, prev_state=0, next_comm=irq/130-rtw88_p, next_tid=743, next_prio=-51, context.packet_seq_num=1, context.cpu_id=5, context._vtid=14973, context._vpid=14973, context._procname=perf	14973	20	14973	
+16:56:28.764 089 478	channel0_5	5	irq_softirq_raise	vec=6, context.packet_seq_num=1, context.cpu_id=5, context._vtid=743, context._vpid=743, context._procname=irq/130-rtw88_p	743	-51	743	
+16:56:28.764 089 993	channel0_5	5	irq_softirq_entry	vec=6, context.packet_seq_num=1, context.cpu_id=5, context._vtid=743, context._vpid=743, context._procname=irq/130-rtw88_p	743	-51	743	
+16:56:28.764 091 680	channel0_5	5	skb_consume	skbaddr=0xffff9e5f141a0300, context.packet_seq_num=1, context.cpu_id=5, context._vtid=743, context._vpid=743, context._procname=irq/130-rtw88_p	743	-51	743	
+16:56:28.764 092 213	channel0_5	5	irq_softirq_exit	vec=6, context.packet_seq_num=1, context.cpu_id=5, context._vtid=743, context._vpid=743, context._procname=irq/130-rtw88_p	743	-51	743	
+16:56:28.764 093 546	channel0_5	5	sched_switch	prev_comm=irq/130-rtw88_p, prev_tid=743, prev_prio=-51, prev_state=1, next_comm=perf, next_tid=14973, next_prio=20, context.packet_seq_num=1, context.cpu_id=5, context._vtid=743, context._vpid=743, context._procname=irq/130-rtw88_p	743	-51	743	
+
+
+
+
+16:56:28.865 795 128	channel0_5	5	irq_handler_entry	irq=130, name=rtw88_pci, context.packet_seq_num=2, context.cpu_id=5, context._vtid=14973, context._vpid=14973, context._procname=perf	14973	20	14973	
+16:56:28.865 795 940	channel0_5	5	irq_handler_exit	irq=130, ret=2, context.packet_seq_num=2, context.cpu_id=5, context._vtid=14973, context._vpid=14973, context._procname=perf	14973	20	14973	
+16:56:28.865 796 457	channel0_5	5	sched_waking	comm=irq/130-rtw88_p, tid=743, prio=-51, target_cpu=5, context.packet_seq_num=2, context.cpu_id=5, context._vtid=14973, context._vpid=14973, context._procname=perf	14973	20	14973	
+16:56:28.865 797 677	channel0_5	5	sched_wakeup	comm=irq/130-rtw88_p, tid=743, prio=-51, target_cpu=5, context.packet_seq_num=2, context.cpu_id=5, context._vtid=14973, context._vpid=14973, context._procname=perf	14973	20	14973	
+16:56:28.865 800 575	channel0_5	5	sched_switch	prev_comm=perf, prev_tid=14973, prev_prio=20, prev_state=256, next_comm=irq/130-rtw88_p, next_tid=743, next_prio=-51, context.packet_seq_num=2, context.cpu_id=5, context._vtid=14973, context._vpid=14973, context._procname=perf	14973	20	14973	
+16:56:28.865 807 839	channel0_5	5	irq_softirq_raise	vec=3, context.packet_seq_num=2, context.cpu_id=5, context._vtid=743, context._vpid=743, context._procname=irq/130-rtw88_p	743	-51	743	
+16:56:28.865 808 381	channel0_5	5	irq_softirq_entry	vec=3, context.packet_seq_num=2, context.cpu_id=5, context._vtid=743, context._vpid=743, context._procname=irq/130-rtw88_p	743	-51	743	
+16:56:28.865 814 728	channel0_5	5	skb_consume	skbaddr=0xffff9e5f141a1600, context.packet_seq_num=2, context.cpu_id=5, context._vtid=743, context._vpid=743, context._procname=irq/130-rtw88_p	743	-51	743	
+16:56:28.865 817 259	channel0_5	5	sched_waking	comm=kworker/u16:1, tid=8193, prio=20, target_cpu=4, context.packet_seq_num=2, context.cpu_id=5, context._vtid=743, context._vpid=743, context._procname=irq/130-rtw88_p	743	-51	743	
+#ack packet from client recive to wifi card
+16:56:28.865 822 791	channel0_5	5	net_napi_gro_receive_entry	skbaddr=0xffff9e5f141a0100, context.packet_seq_num=2, context.cpu_id=5, context._vtid=743, context._vpid=743, context._procname=irq/130-rtw88_p	743	-51	743	
+16:56:28.865 824 864	channel0_5	5	net_napi_gro_receive_exit	ret=3, context.packet_seq_num=2, context.cpu_id=5, context._vtid=743, context._vpid=743, context._procname=irq/130-rtw88_p	743	-51	743	
+16:56:28.866 013 261	channel0_5	5	net_if_receive_skb	skbaddr=0xffff9e5f141a0100, len=52, name=wlp3s0, network_header_type=_ipv4, network_header=ipv4=[version=4, ihl=5, tos=0, tot_len=52, id=0x48ae, frag_off=16384, ttl=64, protocol=_tcp, checksum=0xb7de, saddr_padding=[], saddr=[172, 18, 240, 110], daddr_padding=[], daddr=[172, 18, 241, 163], transport_header_type=_tcp, transport_header=tcp=[source_port=56740, dest_port=2000, seq=3607051071, ack_seq=3399918029, data_offset=8, reserved=0, flags=0x10, window_size=86, checksum=0xced4, urg_ptr=0]], context.packet_seq_num=2, context.cpu_id=5, context._vtid=743, context._vpid=743, context._procname=irq/130-rtw88_p	743	-51	743	
+16:56:28.866 039 621	channel0_5	5	sched_waking	comm=netcat, tid=14976, prio=20, target_cpu=4, context.packet_seq_num=2, context.cpu_id=5, context._vtid=743, context._vpid=743, context._procname=irq/130-rtw88_p	743	-51	743	
+16:56:28.866 041 692	channel0_5	5	skb_consume	skbaddr=0xffff9e5f141a0100, context.packet_seq_num=2, context.cpu_id=5, context._vtid=743, context._vpid=743, context._procname=irq/130-rtw88_p	743	-51	743	
+16:56:28.866 081 190	channel0_4	4	sched_wakeup	comm=netcat, tid=14976, prio=20, target_cpu=4, context.packet_seq_num=3, context.cpu_id=4, context._vtid=0, context._vpid=0, context._procname=swapper/4	0	20		
+16:56:28.866 083 059	channel0_4	4	sched_switch	prev_comm=swapper/4, prev_tid=0, prev_prio=20, prev_state=0, next_comm=netcat, next_tid=14976, next_prio=20, context.packet_seq_num=3, context.cpu_id=4, context._vtid=0, context._vpid=0, context._procname=swapper/4	0	20		
+16:56:28.866 088 770	channel0_4	4	syscall_exit_accept4	ret=4, fd=3, upeer_sockaddr=0x7ffee1e45640, upeer_addrlen=16, flags=0x800, context.packet_seq_num=3, context.cpu_id=4, context._vtid=14976, context._vpid=14976, context._procname=netcat	14976	20	14976	[net/socket.c:0]
+16:56:28.866 109 625	channel0_4	4	syscall_entry_poll	timeout_msecs=-1, nfds=4, fds_length=4, overflow=0, fds=[[fd=0, raw_events=0x1, events._POLLIN=1, events._POLLPRI=0, events._POLLOUT=0, events._POLLERR=0, events._POLLHUP=0, events._padding=0], [fd=4, raw_events=0x0, events._POLLIN=0, events._POLLPRI=0, events._POLLOUT=0, events._POLLERR=0, events._POLLHUP=0, events._padding=0], [fd=4, raw_events=0x1, events._POLLIN=1, events._POLLPRI=0, events._POLLOUT=0, events._POLLERR=0, events._POLLHUP=0, events._padding=0], [fd=1, raw_events=0x0, events._POLLIN=0, events._POLLPRI=0, events._POLLOUT=0, events._POLLERR=0, events._POLLHUP=0, events._padding=0]], context.packet_seq_num=3, context.cpu_id=4, context._vtid=14976, context._vpid=14976, context._procname=netcat	14976	20	14976	[fs/select.c:0]
+16:56:28.866 118 763	channel0_4	4	sched_switch	prev_comm=netcat, prev_tid=14976, prev_prio=20, prev_state=1, next_comm=swapper/4, next_tid=0, next_prio=20, context.packet_seq_num=3, context.cpu_id=4, context._vtid=14976, context._vpid=14976, context._procname=netcat	14976	20	14976	
+16:56:28.866 230 739	channel0_5	5	napi_poll	napi=0xffff9e5f18587658, dev_name=, work=2, budget=64, context.packet_seq_num=2, context.cpu_id=5, context._vtid=743, context._vpid=743, context._procname=irq/130-rtw88_p	743	-51	743	
+16:56:28.866 231 286	channel0_5	5	irq_softirq_exit	vec=3, context.packet_seq_num=2, context.cpu_id=5, context._vtid=743, context._vpid=743, context._procname=irq/130-rtw88_p	743	-51	743	
+16:56:28.866 233 812	channel0_5	5	sched_switch	prev_comm=irq/130-rtw88_p, prev_tid=743, prev_prio=-51, prev_state=1, next_comm=perf, next_tid=14973, next_prio=20, context.packet_seq_num=2, context.cpu_id=5, context._vtid=743, context._vpid=743, context._procname=irq/130-rtw88_p	743	-51	743	
+
+
+
+
+
+commads:
+babeltrace2 -v convert ./../kernel > TEXT_FILE_PATH
+
+
+call-graph:
+
+sudo perf record -ae 'net:netif_receive_skb' --call-graph dwarf
+sudo perf record -ae 'net:napi_gro_receive_entry' --call-graph dwarf
+sudo perf re
+sudo perf script
+sudo perf record -ae 'irq:*,net:*,sock:*,napi:*' -o try2-server
+
+
+
+ftrace (function-graph):
+sudo su
+cd /sys/kernel/debug/tracing
+echo 0 > tracing_on
+echo > trace
+echo function_graph > current_tracer
+echo {function} > set_graph_function
+echo 1 > tracing_on
+
+****doing trace****
+
+echo 0 > tracing_on
+exit
+
+sudo cat /sys/kernel/debug/tracing/trace > trace-file-name
+
+
+
+sudo bpftrace -lv tracepoint:net:netif_receive_skb
+sudo bpftrace -lv tracepoint:net:net_dev_queue
+
+
+linux/blob/master/include/net/tcp_states.h
+
+
+sudo bpftrace state_of_connections.BT
+
+/bin/python3 script.py ~/lttng-traces/trace-path
+
+
+
+
+
+
+
+
+
+
+
+
+

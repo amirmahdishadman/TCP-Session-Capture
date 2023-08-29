@@ -1,0 +1,25 @@
+#ifndef BPFTRACE_HAVE_BTF
+#include <net/sock.h>
+#endif
+
+BEGIN
+{
+	printf("Tracing SYN backlog size. Ctrl-C to end.\n");
+}
+
+kprobe:tcp_v4_syn_recv_sock,
+kprobe:tcp_v6_syn_recv_sock
+{
+    printf("asd");
+	$sock = (struct sock *)arg0;
+	@backlog[$sock->sk_max_ack_backlog & 0xffffffff] =
+	    hist($sock->sk_ack_backlog);
+	if ($sock->sk_ack_backlog > $sock->sk_max_ack_backlog) {
+		time("%H:%M:%S dropping a SYN.\n");
+	}
+}
+
+END
+{
+	printf("\n@backlog[backlog limit]: histogram of backlog size\n");
+}

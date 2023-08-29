@@ -1,0 +1,126 @@
+#ifndef BPFTRACE_HAVE_BTF
+#include <linux/socket.h>
+#include <net/sock.h>
+#else
+#include <sys/socket.h>
+#endif
+
+
+BEGIN
+{
+  printf("Tracing tcp drops. Hit Ctrl-C to end.\n");
+  printf("%-12s %-20s %-8s %-30s %-30s %-30s %-8s\n", "TIME","NANO SEC", "PID", "COMM", "SADDR:SPORT", "DADDR:DPORT", "STATE");
+
+  @tcp_states[1] = "ESTABLISHED";
+  @tcp_states[2] = "SYN_SENT";
+  @tcp_states[3] = "SYN_RECV";
+  @tcp_states[4] = "FIN_WAIT1";
+  @tcp_states[5] = "FIN_WAIT2";
+  @tcp_states[6] = "TIME_WAIT";
+  @tcp_states[7] = "CLOSE";
+  @tcp_states[8] = "CLOSE_WAIT";
+  @tcp_states[9] = "LAST_ACK";
+  @tcp_states[10] = "LISTEN";
+  @tcp_states[11] = "CLOSING";
+  @tcp_states[12] = "NEW_SYN_RECV";
+}
+//tracepoint:net:net_dev_queue,
+// tracepoint:net:netif_receive_skb
+// net_dev_queue
+// tracepoint:net:net_dev_queue
+// {
+// //   printf("asdasdasd");
+// //   $reason = args->reason;
+// //   printf($reason);
+//   $skb = (struct sk_buff *)args->skbaddr;
+//   $sk = ((struct sock *) $skb->sk);
+//   // printf("\n\n%-30x",args->skbaddr);
+//     $inet_family = $sk->__sk_common.skc_family;
+//     $daddr = ntop($sk->__sk_common.skc_daddr);
+//     $saddr = ntop($sk->__sk_common.skc_rcv_saddr);
+  
+//     if ($inet_family == AF_INET) {
+//       $daddr = ntop($sk->__sk_common.skc_daddr);
+//       $saddr = ntop($sk->__sk_common.skc_rcv_saddr);
+//     } else {
+//       $daddr = ntop($sk->__sk_common.skc_v6_daddr.in6_u.u6_addr8);
+//       $saddr = ntop($sk->__sk_common.skc_v6_rcv_saddr.in6_u.u6_addr8);
+//     }
+//     $lport = $sk->__sk_common.skc_num;
+//     $dport = $sk->__sk_common.skc_dport;
+
+//     // $dport = ($dport);
+
+//     $state = $sk->__sk_common.skc_state;
+//     $statestr = @tcp_states[$state];
+
+//     time("%H:%M:%S ");
+//     printf("%llu          ",nsecs);
+//     printf("%-8d %-16s ", pid, comm);
+//     printf("%20s:%-6d %30s:%-15d %-30s\n", $saddr, $lport, $daddr, $dport, $statestr);
+    
+//     // printf("%s\n", kstack);
+  
+// }
+
+kretprobe:tcp_v4_syn_recv_sock  //ack comes to us and create socket
+{
+  //also here you can record time in main func and show it here when this function called
+  $sk = ((struct sock *) retval);
+  $inet_family = $sk->__sk_common.skc_family;
+  $daddr = ntop($sk->__sk_common.skc_daddr);
+  $saddr = ntop($sk->__sk_common.skc_rcv_saddr);
+  $lport = $sk->__sk_common.skc_num;
+  $dport = $sk->__sk_common.skc_dport;
+  $state = $sk->__sk_common.skc_state;
+  $statestr = @tcp_states[$state];
+  time("%H:%M:%S ");
+  printf("%llu          ",nsecs);
+  printf("%-8d %-16s ", pid, comm);
+  printf("%20s:%-6d %30s:%-15d %-30s    this is new line\n", $saddr, $lport, $daddr, $dport, $statestr);
+}
+
+kprobe:tcp_v4_conn_request   //sending syn_ack
+{
+
+  // you can use upper fun note here too.
+  $sk = ((struct sock *) arg0);
+  $inet_family = $sk->__sk_common.skc_family;
+  $daddr = ntop($sk->__sk_common.skc_daddr);
+  $saddr = ntop($sk->__sk_common.skc_rcv_saddr);
+  $lport = $sk->__sk_common.skc_num;
+  $dport = $sk->__sk_common.skc_dport;
+  $state = $sk->__sk_common.skc_state;
+  $statestr = @tcp_states[$state];
+  time("%H:%M:%S ");
+  printf("%llu          ",nsecs);
+  printf("%-8d %-16s ", pid, comm);
+  printf("%20s:%-6d %30s:%-15d %-30s    this is new line2\n", $saddr, $lport, $daddr, $dport, $statestr);
+}
+
+kprobe:tcp_v4_rcv  //syn rceived
+{
+
+
+  //save time here and show if the packet is syn 
+  //or you can filter by flag
+  $skb = ((struct sk_buff *)arg0);
+  $sk = ((struct sock *) $skb->sk);
+  $inet_family = $sk->__sk_common.skc_family;
+  $daddr = ntop($sk->__sk_common.skc_daddr);
+  $saddr = ntop($sk->__sk_common.skc_rcv_saddr);
+  $lport = $sk->__sk_common.skc_num;
+  $dport = $sk->__sk_common.skc_dport;
+  $state = $sk->__sk_common.skc_state;
+  $statestr = @tcp_states[$state];
+  time("%H:%M:%S ");
+  printf("%llu          ",nsecs);
+  printf("%-8d %-16s ", pid, comm);
+  printf("%20s:%-6d %30s:%-15d %-30s    this is new line3\n", $saddr, $lport, $daddr, $dport, $statestr);
+
+}
+
+END
+{
+  clear(@tcp_states);
+}
